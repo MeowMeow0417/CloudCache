@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/ThemeProvider"
-import { ThemeSwitcher } from "@/components/custom/DarkMode";
+import { ThemeProvider } from "@/components/layout/ThemeProvider"
+import NavBar from "@/components/layout/NavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cloud Cache",
-  description: "Cloud Cache is a distributed caching system that provides high availability and low latency for your applications.",
+  title: "CacheCast",
+  description: "CacheCast is a web application that simulates different caching algorithms.",
 };
 
 export default function RootLayout({
@@ -35,8 +35,9 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NavBar />
              {children}
-             <div className="fixed top-4 right-4"><ThemeSwitcher/></div>
+
           </ThemeProvider>
       </body>
     </html>
