@@ -14,18 +14,7 @@ interface PageProps{
   };
 }
 
-const CityPage = async ({params}: PageProps) => {
-  const city = params.cityName
-
-  const router = useRouter();
-
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/weather?city=${city}`, {
-    cache: 'no-store',
-  })
-
-  if (!res.ok) return notFound()
-
-  const data = await res.json()
+const CityPage = ({params}: PageProps) => {
 
   const weatherDetails = [
     { title: 'Air Quality', value: 'Good' },
