@@ -1,45 +1,23 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "@/styles/globals.css";
-import { ThemeProvider } from "@/components/layout/ThemeProvider"
-import NavBar from "@/components/layout/NavBar";
+'use client'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { useRouter } from 'next/navigation';
+import React from 'react'
+import NavBar from '@/components/layout/NavBar';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
-export const metadata: Metadata = {
-  title: "CacheCast",
-  description: "CacheCast is a web application that simulates different caching algorithms.",
-};
+export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const router = useRouter();
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-         <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <NavBar />
-             {children}
+    <main className='min-h-screen flex flex-col'>
 
-          </ThemeProvider>
-      </body>
-    </html>
-  );
+        <NavBar />
+        {children}
+
+    </main>
+  )
 }
+
+export default DashboardLayout
