@@ -18,10 +18,10 @@ const router = useRouter();
         <Card className="p-2 rounded-md px-0">
             <CardContent className='flex justify-between'>
                 <Button variant={'link'} onClick={() => router.push('/dashboard') }>CacheCast</Button>
-                <div className=''>
-                    {/* <div>
+                <div className='flex gap-4'>
+                    <div>
                         <SearchBar />
-                    </div> */}
+                    </div>
                     <div>
                         <ThemeSwitcher />
                     </div>

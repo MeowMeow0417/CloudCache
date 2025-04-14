@@ -1,15 +1,31 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, notFound } from 'next/navigation';
 
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Sun, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const page = () => {
+interface PageProps{
+  params: {
+    cityName: string;
+  };
+}
+
+const CityPage = async ({params}: PageProps) => {
+  const city = params.cityName
+
   const router = useRouter();
+
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/weather?city=${city}`, {
+    cache: 'no-store',
+  })
+
+  if (!res.ok) return notFound()
+
+  const data = await res.json()
 
   const weatherDetails = [
     { title: 'Air Quality', value: 'Good' },
@@ -80,4 +96,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default CityPage;
