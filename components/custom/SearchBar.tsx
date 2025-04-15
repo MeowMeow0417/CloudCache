@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
 
@@ -11,6 +11,7 @@ const SearchBar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Trigger search for matching cities
+  useEffect(() => {})
   const handleSearch = async () => {
     if (!query.trim()) return;
 
