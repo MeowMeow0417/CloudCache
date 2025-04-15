@@ -14,10 +14,9 @@ const NavBar = () => {
 const router = useRouter();
 
   return (
-    <nav className='p-4 w-full max-w-6xl items-center mx-auto'>
-        <Card className="p-2 rounded-md px-0">
-            <CardContent className='flex justify-between'>
-                <Button variant={'link'} onClick={() => router.push('/dashboard') }>CacheCast</Button>
+    <nav className='p-2 w-full items-center mx-auto'>
+
+            <div className='flex justify-end px-4'>
                 <div className='flex gap-4'>
                     <div>
                         <SearchBar />
@@ -26,8 +25,7 @@ const router = useRouter();
                         <ThemeSwitcher />
                     </div>
                 </div>
-            </CardContent>
-        </Card>
+            </div>
     </nav>
   )
 }

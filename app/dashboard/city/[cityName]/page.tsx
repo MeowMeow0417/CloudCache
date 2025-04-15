@@ -7,6 +7,7 @@ import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { Label } from '@/components/ui/label';
 import { Sun, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import HourlyForecast from '@/components/custom/HourlyForecast';
 
 interface PageProps{
   params: {

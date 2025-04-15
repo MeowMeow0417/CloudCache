@@ -44,7 +44,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div ref={containerRef} className="relative w-64">
+    <div ref={containerRef} className="relative w-96">
       {/* Search input */}
       <Input
         value={query}
