@@ -23,7 +23,7 @@ const SideBar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[240px] min-h-screen border-r shadow-md bg-background flex flex-col">
+    <aside className="w-[240px] min-h-screen border-r shadow-md bg-background flex flex-col ">
       <div className="p-6">
         <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
           Cache Cast

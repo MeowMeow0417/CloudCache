@@ -1,12 +1,12 @@
 'use client'
 
 import React from 'react'
+
 import {
   Card, CardHeader, CardContent, CardFooter,
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap'
-
 
 interface WeatherCardProps {
   weatherData: {
@@ -40,6 +40,9 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
           <Label className="text-lg font-semibold">
             {weatherData.location.region}, {weatherData.location.country}
           </Label>
+          {/* <Label className="text-lg font-semibold">
+            {weatherData.location.name}
+          </Label> */}
         </div>
         <Label className="text-muted-foreground">
           {new Date(weatherData.location.localtime).toLocaleString([], {

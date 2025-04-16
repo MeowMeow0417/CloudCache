@@ -1,8 +1,19 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useCallback } from 'react';
 import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
+
+// Utility function to debounce a function call
+function debounce<Func extends (...args: any[]) => void>(func: Func, delay: number) {
+  let timer: NodeJS.Timeout;
+  return (...args: Parameters<Func>) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}
 
 const SearchBar = () => {
   const router = useRouter();
@@ -10,34 +21,45 @@ const SearchBar = () => {
   const [weatherData, setWeatherData] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Trigger search for matching cities
-  useEffect(() => {})
-  const handleSearch = async () => {
-    if (!query.trim()) return;
+  /**
+   * Debounced search function: triggers API call after user pauses typing.
+   * Reduces unnecessary requests and improves performance.
+   */
+  const debouncedSearch = useCallback(
+    debounce(async (searchValue: string) => {
+      const trimmed = searchValue.trim();
+      if (!trimmed) {
+        setWeatherData([]);
+        return;
+      }
 
-    try {
-      const res = await fetch(`/api/LocationSearch?city=${query}`);
-      if (!res.ok) throw new Error('Failed to fetch weather data');
+      try {
+        const res = await fetch(`/api/LocationSearch?city=${trimmed}`);
+        if (!res.ok) throw new Error('Failed to fetch weather data');
 
-      const data = await res.json();
-      setWeatherData(data);
-    } catch (err) {
-      console.error(err);
-      setWeatherData([]);
-    }
+        const data = await res.json();
+        setWeatherData(data);
+      } catch (err) {
+        console.error(err);
+        setWeatherData([]);
+      }
+    }, 200), // Delay in ms (200ms is responsive for fast typing)
+    []
+  );
+
+  // Handles input changes and triggers the debounced search
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setQuery(val);
+    debouncedSearch(val);
   };
 
-  // Trigger search when pressing Enter
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') handleSearch();
-  };
-
-  // Handle losing focus (blur) - hide dropdown after delay so clicks still register
+  // Hides the dropdown suggestions shortly after input blur
   const handleBlur = () => {
-    setTimeout(() => setWeatherData([]), 150);
+    setTimeout(() => setWeatherData([]), 10);
   };
 
-  // Handle clicking a city in the dropdown
+  // Navigates to the selected city and resets the search state
   const handleSelectCity = (name: string) => {
     setQuery('');
     setWeatherData([]);
@@ -46,38 +68,36 @@ const SearchBar = () => {
 
   return (
     <div ref={containerRef} className="relative w-96">
-      {/* Search input */}
+      {/* Input for city search */}
       <Input
         value={query}
-        onChange={(e) => {
-          const val = e.target.value;
-          setQuery(val);
-
-          // Clear dropdown if input is empty
-          if (!val.trim()) setWeatherData([]);
-        }}
-        onKeyDown={handleKeyPress}
-        onFocus={handleSearch}
+        onChange={handleChange}
+        onFocus={() => debouncedSearch(query)} // Trigger search on focus with current input
         onBlur={handleBlur}
         placeholder="Search city..."
       />
 
-      {/* Dropdown suggestions */}
+      {/* Suggestions dropdown */}
       {weatherData.length > 0 && (
-        <div className="absolute z-50 w-full mt-2 border rounded shadow bg-background">
-          {weatherData.map((location: any, idx: number) => (
-            <div
-              key={idx}
-              className="p-2 cursor-pointer text-sm border-b-2"
-              onClick={() => handleSelectCity(location.name)}
-              onMouseDown={() => handleSelectCity(location.name)} // use onMouseDown instead of onClick to trigger before blur
-            >
-              <p className="font-semibold">{location.name}</p>
-              <p className="text-gray-500">
-                {location.region}, {location.country}
-              </p>
-            </div>
-          ))}
+        <div className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl bg-card">
+          {weatherData.map((location: any, idx: number) => {
+            const cityLabel = location.region && location.country
+              ? `${location.name}, ${location.region}, ${location.country}`
+              : location.name;
+
+            return (
+              <div
+                key={idx}
+                className="p-4 text-sm border-b-2 cursor-pointer"
+                onMouseDown={() => handleSelectCity(cityLabel)}
+              >
+                <p className="font-semibold">{location.name}</p>
+                <p className="text-muted-foreground">
+                  {location.region}, {location.country}
+                </p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

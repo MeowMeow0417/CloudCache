@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+
 import HourlyForecast from "@/components/custom/HourlyForecast";
 import {
   Card, CardHeader, CardContent, CardFooter,
@@ -14,12 +15,12 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap';
 import WeatherCard from "@/components/custom/WeatherCard";
+import WeatherDetailsCard from "@/components/custom/WeatherDetailsCard";
 
 export default function Home() {
   const [cityName, setCityName] = useState('Manila');
   const [weatherData, setWeatherData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   // Fetch current weather data
   useEffect(() => {
@@ -121,20 +122,11 @@ export default function Home() {
           WeatherDetails.length > 0 && (
             <section className="grid grid-cols-2 md:grid-cols-2 gap-4 mt-6 w-full max-w-4xl">
               {WeatherDetails.map(({ label, value, icon: Icon }) => (
-                <Card key={label} className="p-4 w-full">
-                  <CardContent className="flex items-center gap-4 justify-between">
-                    <div className="flex flex-col">
-                      <Label className="text-md font-medium">{label}</Label>
-                      <Label className="text-xl">{value}</Label>
-                    </div>
-                    <Icon className="size-10" />
-                  </CardContent>
-                </Card>
+                <WeatherDetailsCard weatherData={weatherData} key={label} label={label} value={value} icon={Icon} />
               ))}
             </section>
           )
         )}
-
 
       </main>
 
