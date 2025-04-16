@@ -54,13 +54,13 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
         <Skeleton className="h-[800px] w-full" />
       ) : (
         <Card className="h-[800px] p-4 overflow-y-auto">
-          <CardHeader className="justify-center">
-            <CardTitle className="text-center text-2xl">
+          <CardHeader className="justify-center ">
+            <CardTitle className="text-center text-2xl p-2">
               Hourly Forecast
             </CardTitle>
           </CardHeader>
 
-          <CardContent className="px-4 h-[800px] overflow-y-auto">
+          <CardContent className="px-4 h-[800px] overflow-y-auto ">
             {sortedHours.map((hour: any, index: number) => {
               const isCurrent = new Date(hour.time).getHours() === currentHour;
               const Icon = getWeatherIcon(hour.condition.code);
@@ -68,7 +68,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
               return (
                 <Card
                   key={index}
-                  className={`p-2 text-center mb-5 transition-all ${
+                  className={`p-2 text-center mb-3 transition-all  ${
                     isCurrent ? 'bg-primary shadow-lg' : ''
                   }`}
                 >

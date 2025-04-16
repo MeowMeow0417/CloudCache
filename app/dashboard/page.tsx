@@ -106,12 +106,14 @@ export default function Home() {
         {/* Weather Card */}
         {weatherData ? (
           <Card className="w-full max-w-4xl">
-            <CardHeader className="flex flex-row justify-between">
-              <div className="flex flex-col">
-                <Label className="text-xl font-semibold">
-                  {weatherData.location.name}, {weatherData.location.country}
+            <CardHeader className="flex flex-row justify-between items-center">
+              <div className="flex flex-row items-center gap-2">
+                {/* <Label className="text-lg font-semibold">
+                  {weatherData.location.region}
+                </Label> */}
+                <Label className="text-lg font-semibold">
+                  {weatherData.location.region}, {weatherData.location.country}
                 </Label>
-                <Label>{weatherData.location.region}</Label>
               </div>
               <Label className="text-muted-foreground">
                 {new Date(weatherData.location.localtime).toLocaleString([], {
@@ -136,10 +138,26 @@ export default function Home() {
                   </Label>
                 </div>
               </div>
-              <Label className="text-2xl">
+              {/* <Label className="text-2xl">
+                {weatherData.current.condition.text}
+              </Label> */}
+            </CardContent>
+
+
+           <CardFooter className="flex flex-col items-center jusify-end">
+           <Label className="text-3xl">
                 {weatherData.current.condition.text}
               </Label>
-            </CardContent>
+              {/* <div className="flex flex-row gap-2 ">
+                <Label className="text-muted-foreground">Last Updated</Label>
+                  <Label className="text-muted-foreground">
+                    {new Date(weatherData.current.last_updated).toLocaleString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })}
+                  </Label>
+              </div> */}
+            </CardFooter>
           </Card>
         ) : (
           <Skeleton className="w-[750px] h-[300px] rounded-md" />
