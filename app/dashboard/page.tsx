@@ -5,15 +5,10 @@ import { useState, useEffect } from "react";
 
 import HourlyForecast from "@/components/custom/HourlyForecast";
 import {
-  Card, CardHeader, CardContent, CardFooter,
-} from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import {
   Wind, Droplet, Cloud, Thermometer, ThermometerSun,
   Umbrella, Eye, Sun, Gauge, ChevronsDownUp,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getWeatherIcon } from '@/lib/utility/WeatherIconMap';
 import WeatherCard from "@/components/custom/WeatherCard";
 import WeatherDetailsCard from "@/components/custom/WeatherDetailsCard";
 
