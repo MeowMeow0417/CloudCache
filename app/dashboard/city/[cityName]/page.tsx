@@ -1,21 +1,39 @@
 'use client';
 
-import React from 'react';
-import { useRouter, notFound } from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import { notFound } from 'next/navigation';
 
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Sun, ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import HourlyForecast from '@/components/custom/HourlyForecast';
+import WeatherCard from '@/components/custom/WeatherCard';
 
 interface PageProps{
-  params: {
-    cityName: string;
-  };
+ cityName: string;
 }
 
-const CityPage = ({params}: PageProps) => {
+const CityPage:React.FC<PageProps> = ({cityName}) => {
+  const [city, setCity] = React.useState('Paris');
+  const [weatherData, setWeatherData] = useState<any | null>(null);
+  const [loading, setLoading] = React.useState(true);
+
+  useEffect(() => {
+    const fetchWeatherData = async () => {
+      try {
+        const res = await fetch(`/api/CurrentWeather?city=${city}`);
+        if (!res.ok) throw new Error('Failed to fetch weather data');
+        const data = await res.json();
+        setWeatherData(data);
+      } catch (err) {
+        console.error(err);
+        notFound();
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeatherData();
+  },[cityName] );
+  // Check if weatherData is null or undefined
 
   const weatherDetails = [
     { title: 'Air Quality', value: 'Good' },
@@ -37,50 +55,17 @@ const CityPage = ({params}: PageProps) => {
   return (
     <section className="p-4">
       <main className="mx-auto flex flex-col items-center gap-4">
-        <Card className="p-6 w-full max-w-6xl">
-          {/* Header */}
-          <CardHeader className="flex justify-between border-b-2 border-gray-200 pb-4">
-            <div className="flex gap-4">
-              <Sun height={100} width={100} />
-              <div className="flex flex-col justify-center">
-                <Label className="text-5xl">33°C</Label>
-                <Label>Feels like 28°C</Label>
-                <Label className="text-2xl">Partly Cloudy</Label>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-1 justify-center">
-              <Label className="text-right text-xl">Sun 13 Apr 2024 - 21:54</Label>
-              <div className="flex justify-between gap-4">
-                <Label className="text-2xl font-light">City</Label>
-                <Label className="text-xl font-extrabold">Paris</Label>
-              </div>
-            </div>
-          </CardHeader>
+        {/* <WeatherCard weatherData={weatherData} /> */}
+        <main className="mx-auto flex flex-col items-center gap-4">
+          {loading ? (
+            <p>Loading weather data...</p>
+          ) : weatherData ? (
+            <WeatherCard weatherData={weatherData} />
+          ) : (
+            <p>No weather data available.</p>
+          )}
+        </main>
 
-          {/* Content */}
-          <CardContent className="grid grid-cols-3 gap-8 py-6">
-            <div className="space-y-2">
-              {weatherDetails.map((detail) => (
-                <div key={detail.title} className="flex justify-between">
-                  <Label className="text-2xl font-light">{detail.title}</Label>
-                  <Label className="text-xl font-extrabold">{detail.value}</Label>
-                </div>
-              ))}
-            </div>
-
-            <div /> {/* Spacer column */}
-
-            <div className="space-y-2">
-              {weatherDetails2.map((detail) => (
-                <div key={detail.title} className="flex justify-between">
-                  <Label className="text-2xl font-light">{detail.title}</Label>
-                  <Label className="text-xl font-extrabold">{detail.value}</Label>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-
-        </Card>
       </main>
     </section>
   );

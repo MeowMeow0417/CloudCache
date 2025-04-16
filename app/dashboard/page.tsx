@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap';
+import WeatherCard from "@/components/custom/WeatherCard";
 
 export default function Home() {
   const [cityName, setCityName] = useState('Manila');
@@ -95,8 +96,6 @@ export default function Home() {
     },
   ] : [];
 
-  // Get icon for current condition
-  const WeatherIcon = getWeatherIcon(weatherData?.current?.condition?.code);
 
   return (
     <section className="flex flex-col lg:flex-row w-full gap-6">
@@ -105,60 +104,7 @@ export default function Home() {
 
         {/* Weather Card */}
         {weatherData ? (
-          <Card className="w-full max-w-4xl">
-            <CardHeader className="flex flex-row justify-between items-center">
-              <div className="flex flex-row items-center gap-2">
-                {/* <Label className="text-lg font-semibold">
-                  {weatherData.location.region}
-                </Label> */}
-                <Label className="text-lg font-semibold">
-                  {weatherData.location.region}, {weatherData.location.country}
-                </Label>
-              </div>
-              <Label className="text-muted-foreground">
-                {new Date(weatherData.location.localtime).toLocaleString([], {
-                  year: 'numeric',
-                  month: '2-digit',
-                  day: '2-digit',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })}
-              </Label>
-            </CardHeader>
-
-            <CardContent className="flex flex-col items-center gap-4">
-              <div className="flex items-center gap-8">
-                <WeatherIcon className="size-30" />
-                <div className="text-center z-10">
-                  <Label className="text-8xl font-bold">
-                    {weatherData.current.temp_c}°
-                  </Label>
-                  <Label className="text-lg">
-                    Feels like {weatherData.current.feelslike_c}°C
-                  </Label>
-                </div>
-              </div>
-              {/* <Label className="text-2xl">
-                {weatherData.current.condition.text}
-              </Label> */}
-            </CardContent>
-
-
-           <CardFooter className="flex flex-col items-center jusify-end">
-           <Label className="text-3xl">
-                {weatherData.current.condition.text}
-              </Label>
-              {/* <div className="flex flex-row gap-2 ">
-                <Label className="text-muted-foreground">Last Updated</Label>
-                  <Label className="text-muted-foreground">
-                    {new Date(weatherData.current.last_updated).toLocaleString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </Label>
-              </div> */}
-            </CardFooter>
-          </Card>
+          <WeatherCard weatherData={weatherData} />
         ) : (
           <Skeleton className="w-[750px] h-[300px] rounded-md" />
         )}
