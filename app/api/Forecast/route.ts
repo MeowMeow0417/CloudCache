@@ -14,17 +14,30 @@ export const GET = async (req: NextRequest) => {
   // Get the weather API key from environment variables
   const apiKey = process.env.WEATHER_API_KEY;
 
-  // Fetch weather data from the external WeatherAPI for the next 3 days
-  const response = await fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3&aqi=yes&alerts=no`
-  );
+  try{
+     // Fetch weather data from the external WeatherAPI for the next 3 days
+    const response = await fetch(
+      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${city}&days=3&aqi=yes&alerts=no`
+    );
 
-  // Handle failure from the external API
-  if (!response.ok) {
-    return NextResponse.json({ error: 'Failed to fetch weather' }, { status: 500 });
+     // Handle failure from the external API
+    if (!response.ok) {
+      return NextResponse.json(
+        { error: 'Failed to fetch weather' },
+        { status: 500 }
+      );
+    }
+
+    // Parse the API response and return it as JSON
+    const data = await response.json();
+    return NextResponse.json(data);
+
+  } catch(error){
+    // Handle unexpected errors (e.g., network issues)
+    console.error('Weather API fetch error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
-
-  // Parse the API response and return it as JSON
-  const data = await response.json();
-  return NextResponse.json(data);
 };
