@@ -24,7 +24,7 @@ const SideBar = () => {
 
   return (
     <aside className="w-[240px] min-h-screen border-r shadow-md bg-background flex flex-col ">
-      <div className="p-6">
+      <div className="p-6 items-center flex flex-col gap-2">
         <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
           Cache Cast
         </Link>

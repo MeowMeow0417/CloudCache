@@ -1,3 +1,5 @@
+// Todo: Update to match WeatherData interface
+
 import { ICache, WeatherData } from './WeatherInterfaces';
 
 export class FIFOCache implements ICache {

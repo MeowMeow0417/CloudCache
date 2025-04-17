@@ -2,7 +2,6 @@
  * TODO: apply interfaces to the components, fifo, lru, opt
  */
 
-
 // Basic weather condition interface
 export interface WeatherCondition {
     text: string;

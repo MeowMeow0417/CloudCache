@@ -5,6 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Label } from '../ui/label';
 import { Skeleton } from '../ui/skeleton';
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap';
+import { ClockIcon } from 'lucide-react';
 
 interface HourlyForecastProps {
   cityName: string;
@@ -47,6 +48,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
     ...hours.filter((hour: any) => new Date(hour.time).getHours() !== currentHour),
   ];
 
+
   return (
     <div>
       {/* Loading state */}
@@ -55,32 +57,31 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
       ) : (
         <Card className="h-[800px] p-4 overflow-y-auto">
           <CardHeader className="justify-center ">
-            <CardTitle className="text-center text-2xl p-2">
-              Hourly Forecast
+            <CardTitle className="text-center text-2xl p-2 flex flex-row items-center justify-center gap-2">
+             <ClockIcon/> Hourly Forecast
             </CardTitle>
           </CardHeader>
 
           <CardContent className="px-4 h-[800px] overflow-y-auto ">
             {sortedHours.map((hour: any, index: number) => {
               const isCurrent = new Date(hour.time).getHours() === currentHour;
-              const Icon = getWeatherIcon(hour.condition.code);
+              const hourCode = hour.condition?.code;
+              const hourTime = new Date(hour.time).getHours();
+              const WeatherIcon = getWeatherIcon(hourCode, hourTime );
 
               return (
                 <Card
                   key={index}
                   className={`p-2 text-center mb-3 transition-all  ${
-                    isCurrent ? 'bg-primary shadow-lg' : ''
+                    isCurrent ? 'bg-accent shadow-lg' : ''
                   }`}
                 >
-                  <CardContent className="grid grid-cols-3 items-center justify-between h-12">
+                  <CardContent className="grid grid-cols-3 items-center justify-between ">
                     {/* Weather icon */}
-                    <div className="flex flex-row items-center">
-                      <Icon className="size-10" />
-                    </div>
-
+                      <img src={WeatherIcon} alt="Weather Icon" className="size-15 object-cover" />
                     {/* Temperature */}
                     <Label className="text-base font-bold">
-                      {hour.temp_c}°C
+                      {hour.temp_c}
                     </Label>
 
                     {/* Time */}

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 /* @import "tw-animate-css"; */
+/* TODO: Provide Attributions to AmCharts */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -89,13 +90,13 @@
 
 
 .dark {
-  --background: oklch(0.18 0.005 250);
+  --background: oklch(0.14 0 334.5);
   --foreground: oklch(0.98 0 0);
 
-  --card: oklch(0.22 0.005 250);
+  --card: oklch(0.18 0 268.54);
   --card-foreground: oklch(0.98 0 0);
 
-  --popover: oklch(0.24 0.005 250);
+  --popover: oklch(0.2 0.0274 255.68);
   --popover-foreground: oklch(0.98 0 0);
 
   --primary: oklch(0.75 0.1 220);
@@ -107,12 +108,12 @@
   --muted: oklch(0.22 0.005 250);
   --muted-foreground: oklch(0.7 0.02 250);
 
-  --accent: oklch(0.3 0.02 180);
+  --accent: oklch(0.24 0.0525 255.6 / 80%);
   --accent-foreground: oklch(0.98 0 0);
 
-  --destructive: oklch(0.7 0.15 27);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 12%);
+  --destructive: oklch(0.47 0.1889 22.58);
+  --border: oklch(0.5 0 0 / 50%);
+  --input: oklch(5 0 0 / 15%);
   --ring: oklch(0.6 0.02 220);
 
   --chart-1: oklch(0.55 0.15 200);
