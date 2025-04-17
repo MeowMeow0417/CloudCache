@@ -14,7 +14,7 @@ import {
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Saved Location', href: '/dashboard/savedLocation', icon: MapPinnedIcon },
-  { name: 'Cache', href: '/components/custom/CacheSim', icon: DatabaseIcon },
+  { name: 'Cache', href: '/dashboard/CacheSim', icon: DatabaseIcon },
   { name: 'Settings', href: '/dashboard/settings', icon: Settings },
   { name: 'Design', href: '/dashboard/design', icon: BrushIcon },
 ];

@@ -63,6 +63,7 @@ const SearchBar = () => {
   const handleSelectCity = (name: string) => {
     setQuery('');
     setWeatherData([]);
+
     router.push(`/dashboard/city/${name.toLowerCase()}`);
   };
 

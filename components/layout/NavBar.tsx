@@ -22,7 +22,7 @@ const router = useRouter();
                         <SearchBar />
                     </div>
                     <div>
-                        {/* <ThemeSwitcher /> */}
+                        <ThemeSwitcher />
                     </div>
                 </div>
             </div>
