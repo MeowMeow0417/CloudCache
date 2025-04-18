@@ -9,7 +9,7 @@ export class LRUCache implements ICache {
     this.maxSize = size;
   }
 
-  put(city: string, data: WeatherData): void {
+  put(city: string, data: WeatherData, future?: string[]): void {
     if (this.cache.has(city)) {
       this.cache.delete(city);
     } else if (this.cache.size >= this.maxSize) {

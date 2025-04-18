@@ -68,10 +68,13 @@ const SearchBar = () => {
     );
 
     if (selected) {
+      // Add the selected city to the search history
       const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
+
       cacheManagerSingleton.put(key, selected); // caches across all 3 algos 🎯
     }
-    console.log(cacheManagerSingleton.getAllCaches());
+    console.log('Cache after selection:', cacheManagerSingleton.getAllCaches());
+
 
     // Check if the city is already in the cache
     setQuery('');

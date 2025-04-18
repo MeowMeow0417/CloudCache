@@ -10,7 +10,7 @@ export class FIFOCache implements ICache {
     this.maxSize = size;
   }
 
-  put(city: string, data: WeatherData): void {
+  put(city: string, data: WeatherData, future?: string[]): void {
     if (!this.cache.has(city)) {
       if (this.queue.length >= this.maxSize) {
         const oldest = this.queue.shift();

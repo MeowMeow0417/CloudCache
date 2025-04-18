@@ -1,7 +1,3 @@
-/**
- * TODO: apply interfaces to the components, fifo, lru, opt
- */
-
 // Basic weather condition interface
 export interface WeatherCondition {
     text: string;
@@ -132,7 +128,7 @@ export interface WeatherCondition {
 
   // Cache interface for storing weather data
   export interface ICache {
-    put(city: string, data: WeatherData, _future?: string[]): void;
+    put(city: string, data: WeatherData, future?: string[]): void;
     get(city: string): WeatherData | null;
     getCache(): string[];
   }
