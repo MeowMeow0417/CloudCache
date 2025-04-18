@@ -33,6 +33,9 @@ export default function Home() {
     };
 
     fetchWeatherData();
+
+    const interval = setInterval(fetchWeatherData, 15 * 60 * 1000); // every 15 mins
+    return () => clearInterval(interval); // cleanup
   }, [cityName]);
 
   // Structure for current weather details

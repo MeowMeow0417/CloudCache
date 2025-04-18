@@ -66,21 +66,29 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
       <CardContent className="flex flex-col items-center gap-4">
         <div className="flex items-center gap-2">
           {WeatherIcon && (<img src={WeatherIcon} alt="Weather Icon" className="size-40 object-cover" />) }
-          <div className="text-center z-10">
+          <div className="text-center flex flex-col items-center">
             <Label className="text-8xl font-bold dark:text-black text-white">
               {weatherData.current.temp_c}°
             </Label>
-            <Label className="text-lg dark:text-black text-white">
-              Feels like {weatherData.current.feelslike_c}°C
-            </Label>
+            <div className='flex flex-row items-center gap-2'>
+              {/* {WeatherIcon && (<img src={WeatherIcon} alt="Weather Icon" className="size-15 object-cover" />) } */}
+              <Label className="text-lg dark:text-black text-white">
+                Feels like {weatherData.current.feelslike_c}°C
+              </Label>
+            </div>
           </div>
         </div>
       </CardContent>
 
-      <CardFooter className="flex flex-col items-center justify-end">
-        <Label className="text-3xl dark:text-black text-white">
-          {weatherData.current.condition.text}
-        </Label>
+      <CardFooter className="flex flex-row items-center justify-center">
+        <div className='flex flex-row items-center gap-2'>
+          {/* {WeatherIcon && (<img src={WeatherIcon} alt="Weather Icon" className="size-15 object-cover" />) } */}
+          <Label className="text-2xl dark:text-black text-white">
+            {weatherData.current.condition.text}
+          </Label>
+
+        </div>
+
       </CardFooter>
     </Card>
   );
