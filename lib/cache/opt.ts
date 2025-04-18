@@ -1,6 +1,5 @@
-// Todo: Update to match WeatherData interface
 
-import { ICache, WeatherData } from './WeatherInterfaces';
+import { ICache, WeatherData } from '../utility/WeatherInterfaces';
 
 export class OPTCache implements ICache {
   private cache: Map<string, WeatherData> = new Map();
@@ -10,7 +9,7 @@ export class OPTCache implements ICache {
     this.maxSize = size;
   }
 
-  put(city: string, data: WeatherData, future: string[]): void {
+  put(city: string, data: WeatherData, future: string[] = []): void {
     if (this.cache.has(city)) return;
 
     if (this.cache.size >= this.maxSize) {
@@ -18,7 +17,7 @@ export class OPTCache implements ICache {
       let cityToEvict = "";
 
       for (const [cachedCity] of this.cache) {
-        const index = future.indexOf(cachedCity);
+        const index = future.indexOf(cachedCity); // ✅ won't error now
         if (index === -1) {
           cityToEvict = cachedCity;
           break;
@@ -33,6 +32,7 @@ export class OPTCache implements ICache {
 
     this.cache.set(city, data);
   }
+
 
   get(city: string): WeatherData | null {
     return this.cache.get(city) || null;

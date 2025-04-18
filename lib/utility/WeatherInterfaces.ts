@@ -132,7 +132,7 @@ export interface WeatherCondition {
 
   // Cache interface for storing weather data
   export interface ICache {
-    put(city: string, data: WeatherData, future?: string[]): void;
+    put(city: string, data: WeatherData, _future?: string[]): void;
     get(city: string): WeatherData | null;
     getCache(): string[];
   }

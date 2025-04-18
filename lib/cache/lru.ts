@@ -1,6 +1,5 @@
-// Todo: Update to match WeatherData interface
 
-import { ICache, WeatherData } from './WeatherInterfaces';
+import { ICache, WeatherData } from '../utility/WeatherInterfaces';
 
 export class LRUCache implements ICache {
   private cache: Map<string, WeatherData> = new Map();

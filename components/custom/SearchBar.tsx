@@ -3,6 +3,7 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
+import { cacheManagerSingleton } from '@/lib/cache/cacheManagerSingleton';
 
 // Utility function to debounce a function call
 function debounce<Func extends (...args: any[]) => void>(func: Func, delay: number) {
@@ -16,6 +17,7 @@ function debounce<Func extends (...args: any[]) => void>(func: Func, delay: numb
 }
 
 const SearchBar = () => {
+
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [weatherData, setWeatherData] = useState<any[]>([]);
@@ -60,11 +62,25 @@ const SearchBar = () => {
   };
 
   // Navigates to the selected city and resets the search state
-  const handleSelectCity = (name: string) => {
+  const handleSelectCity = (region: string) => {
+    const selected = weatherData.find(
+      (loc) => `${loc.name}, ${loc.region}, ${loc.country}` === region
+    );
+
+    if (selected) {
+      const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
+      cacheManagerSingleton.put(key, selected); // caches across all 3 algos 🎯
+    }
+    console.log(cacheManagerSingleton.getAllCaches());
+
+    // Check if the city is already in the cache
     setQuery('');
     setWeatherData([]);
 
-    router.push(`/dashboard/city/${name.toLowerCase()}`);
+
+    // Navigate using the same key format
+    const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
+    router.push(`/dashboard/city/${routeKey}`);
   };
 
   return (
