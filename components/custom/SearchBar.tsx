@@ -17,11 +17,11 @@ function debounce<Func extends (...args: any[]) => void>(func: Func, delay: numb
 }
 
 const SearchBar = () => {
-
   const router = useRouter();
   const [query, setQuery] = useState('');
   const [weatherData, setWeatherData] = useState<any[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const futureAccessRef = useRef<string[]>([]);
 
   /**
    * Debounced search function: triggers API call after user pauses typing.
@@ -67,23 +67,24 @@ const SearchBar = () => {
       (loc) => `${loc.name}, ${loc.region}, ${loc.country}` === region
     );
 
-    if (selected) {
+    if (!selected) return;
       // Add the selected city to the search history
       const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
+      const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
 
-      cacheManagerSingleton.put(key, selected); // caches across all 3 algos 🎯
-    }
-    console.log('Cache after selection:', cacheManagerSingleton.getAllCaches());
+      futureAccessRef.current.push(key); // caches across all 3 algos 🎯
+      // Cache the selected city data
 
+      cacheManagerSingleton.put(key, selected, [...futureAccessRef.current] ) ; // caches across all 3 algos 🎯 (FIFO, LRU, OPT)
 
-    // Check if the city is already in the cache
-    setQuery('');
-    setWeatherData([]);
+      console.log('Cache after selection:', cacheManagerSingleton.getAllCaches());
 
+      // Check if the city is already in the cache
+      setQuery('');
+      setWeatherData([]);
 
-    // Navigate using the same key format
-    const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
-    router.push(`/dashboard/city/${routeKey}`);
+      // Navigate using the same key format
+      router.push(`/dashboard/city/${routeKey}`);
   };
 
   return (

@@ -14,7 +14,7 @@ export class CacheManager {
     this.optCache = new OPTCache(capacity);
   }
 
-  put(key: string, value: any) {
+  put(key: string, value: any, future: string[]) {
     this.fifoCache.put(key, value);
     this.lruCache.put(key, value);
     this.optCache.put(key, value);
