@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap'
+import { MapPin } from 'lucide-react'
 
 interface WeatherCardProps {
   weatherData: {
@@ -45,6 +46,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
     <Card className=" w-full dark:bg-white bg-black ">
       <CardHeader className="flex flex-row justify-between items-center ">
         <div className="flex flex-row items-center gap-2">
+          <MapPin className='size-7  text-white dark:text-black' />
           <Label className={`text-lg font-semibold dark:text-black text-white`}>
             {weatherData.location.region}, {weatherData.location.country}
           </Label>

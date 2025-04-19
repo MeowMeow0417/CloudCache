@@ -59,8 +59,7 @@ const SearchBar = () => {
 
     if (!selected) return;
 
-    const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
-    const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
+    const key = `${selected.name.toLowerCase()}, ${selected.region.toLowerCase()}, ${selected.country.toLowerCase()}`;
 
     // Save search to localStorage
     const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
@@ -77,7 +76,7 @@ const SearchBar = () => {
     // Reset UI and navigate
     setQuery('');
     setWeatherData([]);
-    router.push(`/dashboard/city/${routeKey}`);
+    router.push(`/dashboard/city/${key}`);
   };
 
   return (

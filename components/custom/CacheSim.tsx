@@ -1,6 +1,10 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Card, CardHeader, CardTitle,CardDescription ,CardContent, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const cities = ['Tokyo', 'Paris', 'Rome', 'London', 'Berlin', 'Bangkok', 'Manila', 'Seoul', 'Oslo', 'Beijing'];
 
@@ -54,7 +58,6 @@ const simulateOPT = (requests: string[], cacheSize: number) => {
       if (cache.length < cacheSize) {
         cache.push(city);
       } else {
-        // Find the farthest used city in the future
         let farthestIndex = -1;
         let cityToRemove = cache[0];
 
@@ -96,45 +99,47 @@ const CacheSim: React.FC = () => {
   };
 
   return (
-    <div className="p-6 rounded-xl shadow-md max-w-xl mx-auto space-y-6 bg-white dark:bg-gray-800">
-      <h2 className="text-xl font-semibold">🌦️ CacheCast Simulation</h2>
+    <section className=" max-w-2xl w-full mx-auto space-y-6">
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl">🌦️ CacheCast Strategy Simulator</CardTitle>
+          <CardDescription>This simulation is yung 10 random requests to a cache with a size of {cacheSize} and these requests are hard coded.</CardDescription>
+        </CardHeader>
 
-      <div className="flex items-center space-x-4">
-        <label htmlFor="cacheSize" className="font-medium">
-          Cache Size:
-        </label>
-        <input
-          id="cacheSize"
-          type="number"
-          className="border p-2 rounded-md w-16"
-          value={cacheSize}
-          min={1}
-          max={10}
-          onChange={(e) => setCacheSize(parseInt(e.target.value))}
-        />
-        <button
-          onClick={runSimulation}
-          className="bg-blue-600  px-4 py-2 rounded-md hover:bg-blue-700"
-        >
-          Run Simulation
-        </button>
-      </div>
+        <CardContent className="space-y-4">
+          <div className="flex items-center space-x-4">
+            <Label htmlFor="cacheSize">Cache Size:</Label>
+            <Input
+              id="cacheSize"
+              type="number"
+              min={1}
+              max={10}
+              value={cacheSize}
+              onChange={(e) => setCacheSize(parseInt(e.target.value))}
+              className="w-20"
+            />
+            <Button onClick={runSimulation}>Run Simulation</Button>
+          </div>
 
-      {requests.length > 0 && (
-        <div>
-          <h3 className="font-semibold text-sm text-gray-500">Request Sequence:</h3>
-          <p className="text-sm break-all text-gray-700">{requests.join(', ')}</p>
-        </div>
-      )}
+          {requests.length > 0 && (
+            <div>
+              <Label className="text-sm text-muted-foreground">Generated Request Sequence:</Label>
+              <p className="text-sm mt-1 text-gray-700 break-words">
+                {requests.join(' → ')}
+              </p>
+            </div>
+          )}
+        </CardContent>
 
-      {results && (
-        <div className="space-y-2">
-          <p>📦 <strong>FIFO Misses:</strong> {results.fifo}</p>
-          <p>🕓 <strong>LRU Misses:</strong> {results.lru}</p>
-          <p>🧠 <strong>OPT Misses:</strong> {results.opt}</p>
-        </div>
-      )}
-    </div>
+        {results && (
+          <CardFooter className="flex flex-col items-start space-y-2 pt-4 border-t">
+            <p>📦 <strong>FIFO Misses:</strong> {results.fifo}</p>
+            <p>🕓 <strong>LRU Misses:</strong> {results.lru}</p>
+            <p>🧠 <strong>OPT Misses:</strong> {results.opt}</p>
+          </CardFooter>
+        )}
+      </Card>
+    </section>
   );
 };
 
