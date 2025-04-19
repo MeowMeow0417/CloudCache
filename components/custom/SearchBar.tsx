@@ -5,14 +5,12 @@ import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
 import { cacheManagerSingleton } from '@/lib/cache/cacheManagerSingleton';
 
-// Utility function to debounce a function call
+// Debounce utility
 function debounce<Func extends (...args: any[]) => void>(func: Func, delay: number) {
   let timer: NodeJS.Timeout;
   return (...args: Parameters<Func>) => {
     clearTimeout(timer);
-    timer = setTimeout(() => {
-      func(...args);
-    }, delay);
+    timer = setTimeout(() => func(...args), delay);
   };
 }
 
@@ -23,10 +21,7 @@ const SearchBar = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const futureAccessRef = useRef<string[]>([]);
 
-  /**
-   * Debounced search function: triggers API call after user pauses typing.
-   * Reduces unnecessary requests and improves performance.
-   */
+  // Debounced API call for city search
   const debouncedSearch = useCallback(
     debounce(async (searchValue: string) => {
       const trimmed = searchValue.trim();
@@ -38,67 +33,63 @@ const SearchBar = () => {
       try {
         const res = await fetch(`/api/LocationSearch?city=${trimmed}`);
         if (!res.ok) throw new Error('Failed to fetch weather data');
-
         const data = await res.json();
         setWeatherData(data);
       } catch (err) {
         console.error(err);
         setWeatherData([]);
       }
-    }, 200), // Delay in ms (200ms is responsive for fast typing)
+    }, 200),
     []
   );
 
-  // Handles input changes and triggers the debounced search
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setQuery(val);
-    debouncedSearch(val);
+    setQuery(e.target.value);
+    debouncedSearch(e.target.value);
   };
 
-  // Hides the dropdown suggestions shortly after input blur
   const handleBlur = () => {
     setTimeout(() => setWeatherData([]), 10);
   };
 
-  // Navigates to the selected city and resets the search state
   const handleSelectCity = (region: string) => {
     const selected = weatherData.find(
       (loc) => `${loc.name}, ${loc.region}, ${loc.country}` === region
     );
 
     if (!selected) return;
-      // Add the selected city to the search history
-      const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
-      const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
 
-      futureAccessRef.current.push(key); // caches across all 3 algos 🎯
-      // Cache the selected city data
+    const key = `${selected.region.toLowerCase()}-${selected.country.toLowerCase()}`;
+    const routeKey = `${selected.name.toLowerCase()}-${selected.region.toLowerCase()}`;
 
-      cacheManagerSingleton.put(key, selected, [...futureAccessRef.current] ) ; // caches across all 3 algos 🎯 (FIFO, LRU, OPT)
+    // Save search to localStorage
+    const history = JSON.parse(localStorage.getItem('searchHistory') || '[]');
+    history.push(key);
+    localStorage.setItem('searchHistory', JSON.stringify(history));
 
-      console.log('Cache after selection:', cacheManagerSingleton.getAllCaches());
+    // Update ref and cache
+    futureAccessRef.current = history;
+    cacheManagerSingleton.put(key, selected, [...history]);
 
-      // Check if the city is already in the cache
-      setQuery('');
-      setWeatherData([]);
+    // Use for debugging
+    console.log('Cache:', cacheManagerSingleton.getAllCaches());
 
-      // Navigate using the same key format
-      router.push(`/dashboard/city/${routeKey}`);
+    // Reset UI and navigate
+    setQuery('');
+    setWeatherData([]);
+    router.push(`/dashboard/city/${routeKey}`);
   };
 
   return (
     <div ref={containerRef} className="relative w-96">
-      {/* Input for city search */}
       <Input
         value={query}
         onChange={handleChange}
-        onFocus={() => debouncedSearch(query)} // Trigger search on focus with current input
+        onFocus={() => debouncedSearch(query)}
         onBlur={handleBlur}
         placeholder="Search city..."
       />
 
-      {/* Suggestions dropdown */}
       {weatherData.length > 0 && (
         <div className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl bg-card">
           {weatherData.map((location: any, idx: number) => {

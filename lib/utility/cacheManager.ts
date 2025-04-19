@@ -17,7 +17,7 @@ export class CacheManager {
   put(key: string, value: any, future: string[]) {
     this.fifoCache.put(key, value);
     this.lruCache.put(key, value);
-    this.optCache.put(key, value);
+    this.optCache.put(key, value, future);
   }
 
   getFrom(strategy: 'FIFO' | 'LRU' | 'OPT', key: string) {
@@ -38,4 +38,21 @@ export class CacheManager {
       OPT: this.optCache.getCache(),
     };
   }
+
+  getPageFaultRate(strategy: 'FIFO' | 'LRU' | 'OPT', requests: string[]) {
+    let misses = 0;
+    const cacheSize = this.fifoCache.getCache().length;
+
+    for (const city of requests) {
+      if (!this.getFrom(strategy, city)) {
+        misses++;
+        this.put(city, {}, []); // Dummy data
+      }
+    }
+
+    return misses / requests.length;
+  }
+
+  // Evaluate page faults for a specific strategy
+
 }

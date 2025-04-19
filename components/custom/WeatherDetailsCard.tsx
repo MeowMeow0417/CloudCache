@@ -31,7 +31,7 @@ interface WeatherDetailsProps {
 
 
 const WeatherDetailsCard: React.FC<WeatherDetailsProps> = ({weatherData, label, value, icon: Icon}) => {
-    const WeatherIcon = getWeatherIcon(weatherData?.current?.condition?.code);
+    // const WeatherIcon = getWeatherIcon(weatherData?.current?.condition?.code);
   return (
     <Card key={label} className="p-4 w-full">
         <CardContent className="flex items-center gap-4 justify-between">

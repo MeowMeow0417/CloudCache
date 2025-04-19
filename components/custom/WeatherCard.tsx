@@ -42,7 +42,7 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
 
 
   return (
-    <Card className=" w-3xl max-w-4xl ${invertBg} dark:bg-white bg-black ">
+    <Card className=" w-full dark:bg-white bg-black ">
       <CardHeader className="flex flex-row justify-between items-center ">
         <div className="flex flex-row items-center gap-2">
           <Label className={`text-lg font-semibold dark:text-black text-white`}>
