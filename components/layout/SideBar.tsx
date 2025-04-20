@@ -24,7 +24,7 @@ const SideBar = () => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-[240px] min-h-screen  shadow-md bg-background flex flex-col ">
+    <aside className="w-[240px] min-h-screen border-r-2 shadow-md bg-background flex flex-col ">
       <div className="p-6 items-center flex flex-row gap-2">
         <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
           Cache Cast
@@ -39,7 +39,7 @@ const SideBar = () => {
           const isActive = pathname === href;
 
           return (
-            <>
+
             <Link
               key={name}
               href={href}
@@ -53,7 +53,7 @@ const SideBar = () => {
               <span className="truncate">{name}</span>
             </Link>
 
-            </>
+
           );
         })}
       </nav>
