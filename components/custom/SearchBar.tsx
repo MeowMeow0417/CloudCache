@@ -4,6 +4,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Input } from '../ui/input';
 import { useRouter } from 'next/navigation';
 import { cacheManagerSingleton } from '@/lib/cache/cacheManagerSingleton';
+import { Search } from 'lucide-react';
 
 // Debounce utility
 function debounce<Func extends (...args: any[]) => void>(func: Func, delay: number) {
@@ -80,14 +81,19 @@ const SearchBar = () => {
   };
 
   return (
-    <div ref={containerRef} className="relative w-96">
-      <Input
-        value={query}
-        onChange={handleChange}
-        onFocus={() => debouncedSearch(query)}
-        onBlur={handleBlur}
-        placeholder="Search city..."
-      />
+    <div ref={containerRef} className="relative w-full">
+      <div className='flex flex-row items-center gap-2'>
+        <Input
+          value={query}
+          onChange={handleChange}
+          onFocus={() => {
+            if (query.trim()) debouncedSearch(query);
+          }}
+          onBlur={handleBlur}
+          placeholder="Search city..."
+          aria-label="Search for a city"
+        />
+      </div>
 
       {weatherData.length > 0 && (
         <div className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto rounded-md shadow-2xl bg-card">

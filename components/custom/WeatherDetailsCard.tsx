@@ -20,6 +20,7 @@ interface WeatherDetailsProps {
             localtime: string;
         };
         current: {
+            humidity: string,
             condition: {
                 code: number;
             };
@@ -31,15 +32,17 @@ interface WeatherDetailsProps {
 
 
 const WeatherDetailsCard: React.FC<WeatherDetailsProps> = ({weatherData, label, value, icon: Icon}) => {
-    // const WeatherIcon = getWeatherIcon(weatherData?.current?.condition?.code);
+    // const Weather = weatherData.current.humidity
   return (
-    <Card key={label} className="p-4 w-full">
-        <CardContent className="flex items-center gap-4 justify-between">
-            <div className="flex flex-col">
-              <Label className="text-md font-medium">{label}</Label>
-              <Label className="text-xl">{value}</Label>
-            </div>
-            <Icon className="size-10" />
+    <Card key={label} className="p-4 w-full shadow-sm hover:shadow-md transition-shadow duration-200">
+        <CardContent className="flex items-center justify-between gap-6">
+        <div className="flex flex-col">
+            <Label className="text-sm text-muted-foreground">{label}</Label>
+            <span className="text-lg font-semibold text-foreground">{value}</span>
+        </div>
+        <div className="flex-shrink-0">
+            <Icon className="size-10 text-primary" />
+        </div>
         </CardContent>
     </Card>
   )

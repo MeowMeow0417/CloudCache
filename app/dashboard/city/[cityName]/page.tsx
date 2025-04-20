@@ -34,7 +34,7 @@ const CityPage = () => {
   }, [cityName]);
 
   return (
-    <section className="p-4">
+    <section>
       <main className="mx-auto flex flex-col items-center gap-4">
         {loading ? (
           <Skeleton className='w-[750px] h-[300px] rounded-md'/>
@@ -43,6 +43,7 @@ const CityPage = () => {
         ) : (
           <p>No weather data available.</p>
         )}
+          <HourlyForecast  cityName={cityName}/>
       </main>
     </section>
   );

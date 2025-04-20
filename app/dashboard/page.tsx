@@ -1,6 +1,5 @@
 'use client';
 
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 import HourlyForecast from "@/components/custom/HourlyForecast";
@@ -9,8 +8,14 @@ import {
   Umbrella, Eye, Sun, Gauge, ChevronsDownUp,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Tabs,TabsContent, TabsList,TabsTrigger,
+} from "@/components/ui/tabs"
+import { Label } from "@/components/ui/label";
+import { Clock, Calendar } from "lucide-react";
 import WeatherCard from "@/components/custom/WeatherCard";
 import WeatherDetailsCard from "@/components/custom/WeatherDetailsCard";
+
 
 export default function Home() {
   const [cityName, setCityName] = useState('Manila');
@@ -97,41 +102,55 @@ export default function Home() {
 
 
   return (
-    <section className="flex flex-col lg:flex-row w-full gap-6">
-      {/* Main Weather Panel */}
-      <main className="flex flex-col items-center w-full lg:w-2/3">
+    <section className="flex flex-col items-center w-full gap-6">
 
-        {/* Weather Card */}
-        {weatherData ? (
-          <WeatherCard weatherData={weatherData} />
-        ) : (
-          <Skeleton className="w-[750px] h-[300px] rounded-md" />
-        )}
+      {/* Weather Card */}
+      {weatherData ? (
+        <WeatherCard weatherData={weatherData} />
+      ) : (
+        <Skeleton className="w-full max-w-4xl h-[300px] rounded-md" />
+      )}
 
-        {/* Weather Details Section */}
-        {loading ? (
-          // Show skeletons while loading
-          <section className="grid grid-cols-2 md:grid-cols-2 gap-4 mt-6 w-full max-w-4xl">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-[100px] w-full rounded-md" />
+      {/* Hourly Forecast && Daily Forecast */}
+      <Tabs defaultValue="">
+        <TabsList>
+          <TabsTrigger value="HForecast"><Label><Clock/>Hourly ForeCast</Label></TabsTrigger>
+          <TabsTrigger value="DForecast"><Label><Calendar/>Daily ForeCast</Label></TabsTrigger>
+        </TabsList>
+        <TabsContent value="HForecast">
+          <HourlyForecast cityName={cityName} />
+
+        </TabsContent>
+        <TabsContent value="DForecast">
+
+        </TabsContent>
+      </Tabs>
+
+      {/* Weather Details Grid */}
+      {loading ? (
+        <section className="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+          {Array.from({ length: 9 }).map((_, i) => (
+            <Skeleton key={i} className="h-[100px] w-full rounded-md" />
+          ))}
+        </section>
+      ) : (
+        WeatherDetails.length > 0 && (
+          <section className="grid grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+            {WeatherDetails.map(({ label, value, icon: Icon }) => (
+              <WeatherDetailsCard
+                key={label}
+                label={label}
+                value={value}
+                icon={Icon}
+                weatherData={weatherData}
+              />
             ))}
           </section>
-        ) : (
-          WeatherDetails.length > 0 && (
-            <section className="grid grid-cols-2 md:grid-cols-2 gap-4 mt-6 w-full max-w-4xl">
-              {WeatherDetails.map(({ label, value, icon: Icon }) => (
-                <WeatherDetailsCard weatherData={weatherData} key={label} label={label} value={value} icon={Icon} />
-              ))}
-            </section>
-          )
-        )}
+        )
+      )}
 
-      </main>
 
-      {/* Hourly Forecast Sidebar */}
-      <aside className="w-full lg:w-1/3">
-        <HourlyForecast cityName={cityName} />
-      </aside>
     </section>
+
   );
 }
