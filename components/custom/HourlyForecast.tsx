@@ -56,7 +56,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
       {loading ? (
         <Skeleton className="h-full w-full max-w-5xl mx-auto" />
       ) : (
-        <Card className="p-4 overflow-hidden w-full max-w-5xl mx-auto bg-transparent">
+        <Card className="py-2 overflow-hidden w-full max-w-5xl mx-auto bg-transparent border-none shadow-none">
 
           <CardContent className="h-full overflow-x-auto">
             <div className="flex flex-row gap-4 min-w-fit">

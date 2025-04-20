@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import {
   Wind, Droplet, Cloud, Thermometer, ThermometerSun,
   Umbrella, Eye, Sun, Gauge, ChevronsDownUp,
+  Import,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -12,6 +13,9 @@ import {
 } from "@/components/ui/tabs"
 import { Label } from "@/components/ui/label";
 import { Clock, Calendar } from "lucide-react";
+import {
+  Card, CardContent
+} from "@/components/ui/card";
 import WeatherCard from "@/components/custom/WeatherCard";
 import DailyForecast from "@/components/custom/DailyForecast";
 import HourlyForecast from "@/components/custom/HourlyForecast";
@@ -114,26 +118,29 @@ export default function Home() {
       )}
 
       {/* Hourly & Daily Forecast Tabs */}
-      <div className="w-full max-w-5xl">
-        <Tabs defaultValue="HForecast" className="w-full">
-          <TabsList className="w-full flex justify-start gap-4 mb-4">
-            <TabsTrigger value="HForecast">
-              <Label className="flex items-center gap-2"><Clock className="size-4" /> Hourly Forecast</Label>
-            </TabsTrigger>
-            <TabsTrigger value="DForecast">
-              <Label className="flex items-center gap-2"><Calendar className="size-4" /> Daily Forecast</Label>
-            </TabsTrigger>
-          </TabsList>
+      <Card className="w-full max-w-5x p-4">
+        <CardContent>
+          <Tabs defaultValue="HForecast" className="w-full">
+            <TabsList className="w-full flex justify-start gap-4 mb-4">
+              <TabsTrigger value="HForecast">
+                <Label className="flex items-center gap-2"><Clock className="size-4" /> Hourly Forecast</Label>
+              </TabsTrigger>
+              <TabsTrigger value="DForecast">
+                <Label className="flex items-center gap-2"><Calendar className="size-4" /> Daily Forecast</Label>
+              </TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="HForecast" className="w-full">
-            <HourlyForecast cityName={cityName} />
-          </TabsContent>
+            <TabsContent value="HForecast" className="w-full">
+              <HourlyForecast cityName={cityName} />
+            </TabsContent>
 
-          <TabsContent value="DForecast" className="w-full">
-            <DailyForecast />
-          </TabsContent>
-        </Tabs>
-      </div>
+            <TabsContent value="DForecast" className="w-full">
+              <DailyForecast />
+            </TabsContent>
+          </Tabs>
+        </CardContent>
+
+      </Card>
 
       {/* Weather Details */}
       <div className="w-full max-w-5xl">
