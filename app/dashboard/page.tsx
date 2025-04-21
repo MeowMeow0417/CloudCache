@@ -131,7 +131,7 @@ export default function Home() {
 
 
   return (
-    <section className="flex flex-col items-center w-full gap-8 px-4 lg:px-8">
+    <section className="flex flex-col items-center w-full gap-8 lg:px-8 pb-[120px] md:pb-0 ">
 
       {/* Weather Card */}
       {weatherData ? (
@@ -145,7 +145,7 @@ export default function Home() {
 
       {/* Hourly & Daily Forecast Tabs */}
       <Card className="w-full max-w-5x p-4">
-        <CardContent>
+        <CardContent className="p-0">
           <Tabs defaultValue="HForecast" className="w-full">
             <TabsList className="w-full flex justify-start gap-4 mb-4">
               <TabsTrigger value="HForecast">

@@ -10,7 +10,9 @@ import {
   DatabaseIcon,
   BrushIcon
 } from "lucide-react";
-import { ThemeSwitcher } from '../custom/DarkMode';
+import { useMediaQuery } from '@/lib/hooks/useMediaQuery';
+import { Card } from '../ui/card';
+import { cn } from '@/lib/utils'; // optional: for cleaner classnames
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -22,42 +24,65 @@ const navigation = [
 
 const SideBar = () => {
   const pathname = usePathname();
+  const isDesktop = useMediaQuery('(min-width: 770px)'); // Tailwind `md` breakpoint
 
+  if (isDesktop) {
+    return (
+      <aside className="w-[240px] min-h-screen border-r-2 shadow-md bg-background flex flex-col">
+        <div className="p-6 items-center flex flex-row gap-2">
+          <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
+            Cache Cast
+          </Link>
+        </div>
+
+        <nav className="flex flex-col px-2 space-y-2">
+          {navigation.map(({ name, href, icon: Icon }) => {
+            const isActive = pathname === href;
+
+            return (
+              <Link
+                key={name}
+                href={href}
+                className={cn(
+                  "flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300",
+                  isActive
+                    ? "bg-card text-primary font-semibold border-r-4 border-l-4 border-primary"
+                    : "text-muted-foreground hover:text-primary hover:bg-muted/50 hover:border-r-2 hover:border-l-2 hover:border-primary hover:rounded-none"
+                )}
+              >
+                <Icon className="size-5" />
+                <span className="truncate">{name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    );
+  }
+
+  // Mobile version (horizontal floating bar with icons only)
   return (
-    <aside className="w-[240px] min-h-screen border-r-2 shadow-md bg-background flex flex-col ">
-      <div className="p-6 items-center flex flex-row gap-2">
-        <Link href="/dashboard" className="text-2xl font-bold tracking-tight">
-          Cache Cast
-        </Link>
-        <ThemeSwitcher />
-      </div>
-
-
-
-      <nav className="flex flex-col px-2 space-y-2">
+    <nav className="fixed bottom-5 left-0 right-0 flex justify-around p-4 z-50">
+      <Card className='flex flex-row gap-8 p-4 '>
         {navigation.map(({ name, href, icon: Icon }) => {
           const isActive = pathname === href;
 
           return (
-
             <Link
               key={name}
               href={href}
-              className={`flex items-center gap-3 px-4 py-2 rounded-md transition-all duration-300
-                ${isActive
-                  ? "bg-card text-primary font-semibold border-r-4 border-l-4 border-primary"
-                  : "text-muted-foreground hover:text-primary hover:bg-muted/50 hover:border-r-2 hover:border-l-2 hover:border-primary hover:rounded-none"
-                }`}
+              className={cn(
+                "flex flex-col items-center justify-center text-xs transition-all p-2 rounded-md",
+                isActive ? "bg-primary" : "text-muted-foreground hover:text-primary"
+              )}
             >
-              <Icon className="w-5 h-5" />
-              <span className="truncate">{name}</span>
+              <Icon className="size-8" />
             </Link>
-
-
           );
         })}
-      </nav>
-    </aside>
+      </Card>
+
+    </nav>
   );
 };
 

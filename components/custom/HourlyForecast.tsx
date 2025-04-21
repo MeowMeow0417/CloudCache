@@ -57,7 +57,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
       ) : (
         <Card className="py-2 overflow-hidden w-full max-w-5xl mx-auto bg-transparent border-none shadow-none">
 
-          <CardContent className="h-full overflow-x-auto">
+          <CardContent className="h-full overflow-x-auto p-2">
             <div className="flex flex-row gap-4 min-w-fit">
               {sortedHours.map((hour: any, index: number) => {
                 const isNext = new Date(hour.time).getHours() === nextHour;

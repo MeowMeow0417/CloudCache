@@ -34,7 +34,7 @@ const CityPage = () => {
   }, [cityName]);
 
   return (
-    <section>
+  <section className="flex flex-col items-center w-full gap-8 lg:px-8 pb-[100px] md:pb-0">
       <main className="mx-auto flex flex-col items-center gap-4">
         {loading ? (
           <Skeleton className='w-[750px] h-[300px] rounded-md'/>

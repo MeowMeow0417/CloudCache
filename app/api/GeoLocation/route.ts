@@ -6,9 +6,9 @@ export const GET = async (req: NextRequest) => {
     const lat = req.nextUrl.searchParams.get('lat');
     const long = req.nextUrl.searchParams.get('long');
 
-    console.log('🌍 Incoming GeoLocation API call');
-    console.log('📍 Latitude:', lat);
-    console.log('📍 Longitude:', long);
+    console.log('Incoming GeoLocation API call');
+    console.log('Latitude:', lat);
+    console.log('Longitude:', long);
 
     if (!lat || !long) {
       console.error('❌ Missing latitude or longitude');

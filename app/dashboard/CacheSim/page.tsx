@@ -38,7 +38,8 @@ const SimulationPage = () => {
   const totalHistory = history.length;
 
   return (
-    <section className="p-6 max-w-2xl w-full mx-auto space-y-8">
+    <section className="flex flex-col items-center w-full gap-8 lg:px-8 pb-[120px] md:pb-0  mx-auto" >
+
       <h1 className="text-3xl font-bold text-center">Cache Strategy Simulation</h1>
 
       {results ? (

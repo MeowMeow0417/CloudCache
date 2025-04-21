@@ -10,12 +10,11 @@ interface Location {
 export function useGeoLocation() {
   const [location, setLocation] = useState<Location | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by your browser.');
-      setLoading(false);
       return;
     }
 
@@ -31,15 +30,13 @@ export function useGeoLocation() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         });
-        setLoading(false);
       },
       (err) => {
         setError(`Geolocation error: ${err.message}`);
-        setLoading(false);
       },
       geoOptions
     );
   }, []);
 
-  return { location, error, loading };
+  return { location, error};
 }
