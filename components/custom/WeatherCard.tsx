@@ -48,11 +48,8 @@ const WeatherCard: React.FC<WeatherCardProps> = ({ weatherData }) => {
         <div className="flex flex-row items-center gap-2">
           <MapPin className='size-7  text-white dark:text-black' />
           <Label className={`text-lg font-semibold dark:text-black text-white`}>
-            {weatherData.location.region}, {weatherData.location.country}
+          {weatherData.location.name}, {weatherData.location.region}
           </Label>
-          {/* <Label className="text-lg font-semibold">
-            {weatherData.location.name}
-          </Label> */}
         </div>
         <Label className="text-white dark:text-black ">
           {new Date(weatherData.location.localtime).toLocaleString([], {

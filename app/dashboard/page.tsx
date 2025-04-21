@@ -20,22 +20,48 @@ import WeatherCard from "@/components/custom/WeatherCard";
 import DailyForecast from "@/components/custom/DailyForecast";
 import HourlyForecast from "@/components/custom/HourlyForecast";
 import WeatherDetailsCard from "@/components/custom/WeatherDetailsCard";
-
+import { useGeoLocation } from "@/lib/hooks/useGeolocation";
 
 export default function Home() {
   // TODO: implement a Web Geolocation API
-  const [cityName, setCityName] = useState('Manila');
+  const [cityName, setCityName] = useState<string | null>(null);
+  const {location, error} = useGeoLocation();
   const [weatherData, setWeatherData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const lat = location?.lat;
+  const long = location?.lng;
+
+  // Fetch city name from lat/long
+  useEffect(() => {
+    const fetchCityName = async () => {
+      if (!lat || !long) return;
+
+      try {
+        const res = await fetch(`/api/GeoLocation?lat=${lat}&long=${long}`);
+        const data = await res.json();
+        if (data?.location?.name && data?.location?.region) {
+          setCityName(`${data.location.name}, ${data.location.region}`);
+        }
+      } catch (err) {
+        console.error('❌ Failed to fetch city name', err);
+      }
+    };
+
+    fetchCityName();
+  }, [lat, long]); // ✅ Only re-run when lat/long changes
 
   // Fetch current weather data
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
+
         const res = await fetch(`/api/CurrentWeather?city=${cityName}`);
         if (!res.ok) throw new Error('Failed to fetch weather data');
+
         const data = await res.json();
         setWeatherData(data);
+
       } catch (err) {
         console.error(err);
       } finally {
@@ -96,14 +122,11 @@ export default function Home() {
       value: `${weatherData.current.vis_km} km`,
       icon: Eye,
     },
-    // {
-    //   label: 'Air Quality',
-    //   value:
-    //     weatherData.current.air_quality?.co !== undefined
-    //       ? `${weatherData.current.air_quality.co} µg/m³`
-    //       : 'N/A',
-    //   icon: Gauge,
-    // },
+    {
+      label: 'Air Quality',
+      value: `${weatherData.current.air_quality.co} µg/m³`,
+      icon: Gauge,
+    },
   ] : [];
 
 
@@ -116,6 +139,9 @@ export default function Home() {
       ) : (
         <Skeleton className="w-full max-w-4xl h-[300px] rounded-xl" />
       )}
+
+      {/* <GeoLocationComponent /> */}
+
 
       {/* Hourly & Daily Forecast Tabs */}
       <Card className="w-full max-w-5x p-4">
@@ -131,7 +157,9 @@ export default function Home() {
             </TabsList>
 
             <TabsContent value="HForecast" className="w-full">
-              <HourlyForecast cityName={cityName} />
+              {/* <HourlyForecast cityName={cityName} /> */}
+              {cityName && <HourlyForecast cityName={cityName} />}
+
             </TabsContent>
 
             <TabsContent value="DForecast" className="w-full">

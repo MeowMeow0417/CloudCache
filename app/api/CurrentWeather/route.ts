@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
   try {
     // Call the external WeatherAPI to fetch current weather data
     const response = await fetch(
-      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`
+      `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}&days=3&aqi=yes&alerts=no`
     );
 
     // Check if the response is successful

@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import {
-  Card, CardHeader, CardTitle, CardContent, CardFooter
+  Card, CardContent
 } from "@/components/ui/card";
 import { Label } from '../ui/label';
 import { Skeleton } from '../ui/skeleton';
 import { getWeatherIcon } from '@/lib/utility/WeatherIconMap';
-import { ClockIcon } from 'lucide-react';
 
 interface HourlyForecastProps {
   cityName: string;
@@ -77,7 +76,7 @@ const HourlyForecast: React.FC<HourlyForecastProps> = ({ cityName }) => {
                       <img
                         src={WeatherIcon}
                         alt="Weather Icon"
-                        className="size-10 object-cover"
+                        className="size-15 object-cover"
                       />
                       <Label className="text-base font-bold">{hour.temp_c}</Label>
                       <Label className="text-sm font-medium">
